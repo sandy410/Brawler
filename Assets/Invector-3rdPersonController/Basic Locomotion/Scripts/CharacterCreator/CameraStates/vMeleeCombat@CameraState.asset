@@ -17,7 +17,7 @@ MonoBehaviour:
   - Name: Default
     forward: -1
     right: 0
-    defaultDistance: 2.5
+    defaultDistance: 2
     maxDistance: 8
     minDistance: 0.6
     height: 1.8
@@ -65,14 +65,14 @@ MonoBehaviour:
     lookPoints: []
     cameraMode: 0
   - Name: Strafing
-    forward: -1
+    forward: -0.25
     right: 0.68
-    defaultDistance: 1.35
+    defaultDistance: 2
     maxDistance: 1.5
     minDistance: 0.25
-    height: 1.6
-    smooth: 10
-    smoothDamp: 6
+    height: 2
+    smooth: 4.36
+    smoothDamp: 9.33
     xMouseSensitivity: 1
     yMouseSensitivity: 1
     yMinLimit: -40
