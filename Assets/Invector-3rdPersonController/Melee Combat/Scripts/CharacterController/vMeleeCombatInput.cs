@@ -18,6 +18,9 @@ namespace Invector.vCharacterController
         public GenericInput strongAttackInput = new GenericInput("Alpha1", false, "RT", true, "RT", false);
         public GenericInput blockInput = new GenericInput("Mouse1", "LB", "LB");
 
+        public GenericInput LowerweakAttackInput = new GenericInput("Mouse1", "RB", "RB");
+        public GenericInput LowerstrongAttackInput = new GenericInput("Alpha2", false, "RT", true, "RT", false);
+
         internal vMeleeManager meleeManager;
         protected bool _isAttacking;
         public bool isAttacking { get => _isAttacking || cc.IsAnimatorTag("Attack"); protected set { _isAttacking = value; } }
@@ -84,6 +87,8 @@ namespace Invector.vCharacterController
             {
                 MeleeWeakAttackInput();
                 MeleeStrongAttackInput();
+                LowerMeleeWeakAttackInput();
+                LowerMeleeStrongAttackInput();
                 BlockingInput();
             }
             else
@@ -97,6 +102,38 @@ namespace Invector.vCharacterController
 
         /// <summary>
         /// WEAK ATK INPUT
+        public virtual void LowerMeleeWeakAttackInput()
+        {
+            if (cc.animator == null)
+            {
+                return;
+            }
+            if (LowerweakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions())
+            {
+                cc.animator.SetInteger(vAnimatorParameters.AttackID, AttackID);
+                cc.animator.SetTrigger(vAnimatorParameters.WeakAttack);
+                cc.animator.SetTrigger("LowAttack");
+            }
+        }
+
+        public virtual void LowerMeleeStrongAttackInput()
+        {
+            if (cc.animator == null)
+            {
+                return;
+            }
+
+
+            if (LowerstrongAttackInput.GetButtonDown() &&  MeleeAttackStaminaConditions())
+            {
+                print("Lower Strong Attack");
+                cc.animator.SetInteger(vAnimatorParameters.AttackID, 2);
+                cc.animator.SetTrigger(vAnimatorParameters.StrongAttack);              
+               
+                cc.animator.SetBool("LowAttack", true);
+            }
+        }
+
         /// </summary>
         public virtual void MeleeWeakAttackInput()
         {
@@ -104,8 +141,9 @@ namespace Invector.vCharacterController
             {
                 return;
             }
+          
 
-            if (weakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions())
+                if (weakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions())
             {
                 TriggerWeakAttack();
             }else

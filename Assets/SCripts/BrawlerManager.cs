@@ -72,6 +72,13 @@ public class BrawlerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1))
+        {
+            print("grab");
+            anim.SetTrigger("Tired");
+        }
+
+
         if (Input.GetKeyDown(KeyCode.F))
             ChangeCameraAngle();
 
