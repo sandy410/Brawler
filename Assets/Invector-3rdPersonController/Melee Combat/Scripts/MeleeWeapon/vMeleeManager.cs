@@ -45,6 +45,8 @@ namespace Invector.vMelee
         private float senselessTime;
         private bool inRecoil;
         private string attackName;
+        [HideInInspector]
+        public bool isLowAttack = false;                      // low attack to determine type of attack from vmeleeAttackControl
 
         protected virtual void Start()
         {
@@ -175,7 +177,8 @@ namespace Invector.vMelee
             /// Calc damage with multiplier 
             /// and Call ApplyDamage of attackObject 
             
-            damage.damageValue *= damageMultiplier > 1 ? damageMultiplier : 1;            
+            damage.damageValue *= damageMultiplier > 1 ? damageMultiplier : 1;
+            print(hitInfo.attackObject.GetComponentInParent<vMeleeManager>().isLowAttack);
             hitInfo.targetIsBlocking = !hitInfo.attackObject.ApplyDamage(hitInfo.hitBox, hitInfo.targetCollider, damage);
 
             onDamageHit.Invoke(hitInfo);            

@@ -12,7 +12,7 @@ public class HeadTRack : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        objTransform = GameObject.FindGameObjectWithTag("LookAt").transform;
+      //  objTransform = GameObject.FindGameObjectWithTag("LookAt").transform;
     }
 
     // Update is called once per frame

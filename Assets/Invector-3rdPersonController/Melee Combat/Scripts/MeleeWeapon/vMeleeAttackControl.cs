@@ -30,6 +30,7 @@ namespace Invector.vMelee
         public bool debug;
         private vIAttackListener mFighter;
         private bool isAttacking;
+        public bool isLowAttack;
 
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -99,7 +100,10 @@ namespace Invector.vMelee
         {
             var meleeManager = animator.GetComponent<vMeleeManager>();
             if (meleeManager)
-                meleeManager.SetActiveAttack(bodyParts, meleeAttackType, value, damageMultiplier, recoilID, reactionID, ignoreDefense, activeRagdoll,senselessTime, damageType);
+            {
+                meleeManager.SetActiveAttack(bodyParts, meleeAttackType, value, damageMultiplier, recoilID, reactionID, ignoreDefense, activeRagdoll, senselessTime, damageType);
+                meleeManager.isLowAttack = isLowAttack;
+            }
         }
     }
 }

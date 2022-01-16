@@ -30,6 +30,8 @@ namespace Invector
         public string damageType;
         [HideInInspector] public Vector3 force;
 
+
+
         public vDamage()
         {
             this.damageValue = 15;

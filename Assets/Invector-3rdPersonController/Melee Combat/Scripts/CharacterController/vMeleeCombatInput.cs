@@ -17,6 +17,7 @@ namespace Invector.vCharacterController
         public GenericInput weakAttackInput = new GenericInput("Mouse0", "RB", "RB");
         public GenericInput strongAttackInput = new GenericInput("Alpha1", false, "RT", true, "RT", false);
         public GenericInput blockInput = new GenericInput("Mouse1", "LB", "LB");
+        public GenericInput LowerblockInput = new GenericInput("C", "LB", "LB");
 
         public GenericInput LowerweakAttackInput = new GenericInput("Mouse1", "RB", "RB");
         public GenericInput LowerstrongAttackInput = new GenericInput("Alpha2", false, "RT", true, "RT", false);
@@ -27,6 +28,9 @@ namespace Invector.vCharacterController
         public bool isBlocking { get; protected set; }
         public bool isArmed { get { return meleeManager != null && (meleeManager.rightWeapon != null || (meleeManager.leftWeapon != null && meleeManager.leftWeapon.meleeType != vMeleeType.OnlyDefense)); } }
         public bool isEquipping { get; protected set; }
+
+        public bool isLowBlocking;
+
 
         [HideInInspector]
         public bool lockMeleeInput;
@@ -90,11 +94,13 @@ namespace Invector.vCharacterController
                 LowerMeleeWeakAttackInput();
                 LowerMeleeStrongAttackInput();
                 BlockingInput();
+                BlockInputLower();
             }
             else
             {
                 ResetAttackTriggers();
                 isBlocking = false;
+                isLowBlocking = false;
             }
         }
 
@@ -108,7 +114,7 @@ namespace Invector.vCharacterController
             {
                 return;
             }
-            if (LowerweakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions())
+            if (LowerweakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions() && !weakAttackInput.GetButtonDown() )
             {
                 cc.animator.SetInteger(vAnimatorParameters.AttackID, AttackID);
                 cc.animator.SetTrigger(vAnimatorParameters.WeakAttack);
@@ -143,7 +149,7 @@ namespace Invector.vCharacterController
             }
           
 
-                if (weakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions())
+                if (weakAttackInput.GetButtonDown() && MeleeAttackStaminaConditions() && !LowerweakAttackInput.GetButtonDown())
             {
                 TriggerWeakAttack();
             }else
@@ -193,6 +199,18 @@ namespace Invector.vCharacterController
             }
 
             isBlocking = blockInput.GetButton() && cc.currentStamina > 0 && !cc.customAction && !isAttacking;
+        }
+
+        public virtual void BlockInputLower()
+        {
+            if (cc.animator == null)
+            {
+                return;
+            }
+          
+            isLowBlocking = LowerblockInput.GetButton() && cc.currentStamina > 0 && !cc.customAction && !isAttacking;
+
+
         }
 
         /// <summary>
@@ -252,6 +270,7 @@ namespace Invector.vCharacterController
             cc.animator.SetInteger(vAnimatorParameters.AttackID, AttackID);
             cc.animator.SetInteger(vAnimatorParameters.DefenseID, DefenseID);
             cc.animator.SetBool(vAnimatorParameters.IsBlocking, isBlocking);
+            cc.animator.SetBool("IsLowBlocking", isLowBlocking);
             cc.animator.SetFloat(vAnimatorParameters.MoveSet_ID, meleeMoveSetID, .2f, vTime.deltaTime);
             isEquipping = cc.IsAnimatorTag("IsEquipping");
         }
